@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">LocationBasedUpsell</string>
     <string name="title_activity_maps">LocationBasedUpsell</string>
+    <string name="enableFeature">Enable Live Deal</string>
+    <string-array name="category_array">
+        <item>Please select a deal category</item>
+        <item>Housing</item>
+        <item>Restaurant</item>
+        <item>Fashion</item>
+    </string-array>
 </resources>
