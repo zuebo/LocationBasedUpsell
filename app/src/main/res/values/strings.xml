@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LocationBasedUpsell</string>
+    <string name="title_activity_maps">LocationBasedUpsell</string>
 </resources>
