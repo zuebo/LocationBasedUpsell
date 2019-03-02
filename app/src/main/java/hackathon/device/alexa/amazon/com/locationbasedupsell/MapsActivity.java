@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -36,16 +37,22 @@ import com.google.maps.model.TravelMode;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, AdapterView.OnItemSelectedListener {
     private static final String TAG = "MapsActivity";
     private GoogleMap mMap;
+    private DealFinder dealFinder;
+
+    // start and end destination
+    private String mStartingPoint;
+    private String mEndPoint;
+
+    // selected type.
+    private String mDealType;
 
     // this is the deal lists
-    private ArrayList<DealModel> mDealListItems = new ArrayList<>();
+    private ArrayList<Deal> mDealListItems = new ArrayList<>();
     private DealItemArrayAdapter mDealListAdapter;
     private ListView mDealListView;
 
@@ -53,19 +60,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        setupStartEndInputs();
         setupMapView();
         setupFeatureSwitch();
         setupCategorySpinner();
         setupDealListView();
-    }
 
-    private void setupDealListView() {
-        mDealListItems.add(new DealModel("Your deal is coming up!"));
-        mDealListAdapter = new DealItemArrayAdapter(this, mDealListItems);
-
-        mDealListView = findViewById(R.id.dealListView);
-        mDealListView.setAdapter(mDealListAdapter);
-
+        dealFinder = new DealFinder();
     }
 
     @Override
@@ -161,6 +162,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapter, View view, int i, long l) {
+        // An item was selected. You can retrieve the selected item using
+        // parent.getItemAtPosition(pos)
+        mDealType = (String) adapter.getItemAtPosition(i);
+        Log.i(TAG, "onItemSelected: " + mDealType);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+    private void updateDealList() {
+        mDealListAdapter.clear();
+        mDealListAdapter.addAll(mDealListItems);
+
+    }
+
+    private void setupStartEndInputs() {
+        final EditText startText = (EditText) findViewById(R.id.startPoint);
+        final EditText endText = (EditText) findViewById(R.id.endPoint);
+        startText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mStartingPoint = startText.getText().toString();
+            }
+        });
+        endText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mEndPoint = endText.getText().toString();
+            }
+        });
+    }
+
+    private void setupDealListView() {
+        // initialize
+        mDealListItems.add(getDealObject());
+        mDealListItems.add(getDealObject());
+        mDealListAdapter = new DealItemArrayAdapter(this, mDealListItems);
+
+        mDealListView = findViewById(R.id.dealListView);
+        mDealListView.setAdapter(mDealListAdapter);
+
+    }
+
+
+
     private void setupMapView() {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -202,16 +252,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         spinner.setOnItemSelectedListener(this);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapter, View view, int i, long l) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
-        String item = (String) adapter.getItemAtPosition(i);
-        Log.i(TAG, "onItemSelected: " + item);
+
+
+    private Deal getDealObject() {
+        DealFinder dealFinder = new DealFinder();
+        return dealFinder.getTestDeal();
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 }

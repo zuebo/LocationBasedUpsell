@@ -2,13 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:weightSum="4"
+    android:layout_height="75dp">
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/dealTitle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="16dp"
+            android:lines="2"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+        <TextView
+            android:id="@+id/dealSubTitle"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="13dp" />
+
+    </LinearLayout>
     <TextView
-        android:id="@+id/dealText"
+        android:id="@+id/shopDeal"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:textSize="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        android:text="@string/shopDeal"
+        android:gravity="center"
+        android:textColor="@color/colorPrimaryDark"/>
 
 </LinearLayout>

@@ -23,6 +23,11 @@ public class Deal {
 
     }
 
+    public Deal(String provider, String description) {
+        this.provider = provider;
+        this.description = description;
+    }
+
     public Deal(String company, LatLng location, String description, String provider) {
         this.company = company;
         this.location = location;
@@ -81,7 +86,7 @@ public class Deal {
         return deals;
     }
 
-    private static Deal fromJson(JSONObject jsonObject) {
+    static Deal fromJson(JSONObject jsonObject) {
         Deal deal = new Deal();
         try {
             deal.company = jsonObject.getString("company");

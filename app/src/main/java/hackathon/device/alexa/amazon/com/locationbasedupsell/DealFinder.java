@@ -21,10 +21,10 @@ public class DealFinder {
 
 
     List<Deal> findDeals(LatLng latLng, String dealType) {
-        List<Deal> deals = null;
+        List<Deal> deals = new ArrayList<>();
         try {
             for (JSONObject record : dealDatabase) {
-                if (dealType.equals(record.getString("dealType")) && inGeofence(latLng, record)) {
+                if (dealType.toLowerCase().equals(record.getString("dealType")) && inGeofence(latLng, record)) {
                     List<Deal> geofenceDeals = Deal.fromJson(record.getJSONArray("deals"));
                     deals.addAll(geofenceDeals);
                 }
@@ -38,8 +38,23 @@ public class DealFinder {
     private void populateDealDatabase() {
         JSONObject record = null;
         try {
+            //housing
             record = new JSONObject("{\"southwest\":{\"latitude\":37.37,\"longitude\":-122.01},\"northeast\":{\"latitude\":37.4,\"longitude\":-121.98},\"dealType\":\"housing\",\"deals\":[{\"location\":{\"latitude\":37.38,\"longitude\":-121.98},\"company\":\"The Arches\",\"description\":\"1235 Wildwood Ave, Sunnyvale, CA 94089\\n 2 bedroom, $2600/month\",\"provider\":\"Zillow\"}]}");
             dealDatabase.add(record);
+            record = new JSONObject("{\"southwest\":{\"latitude\":37.37,\"longitude\":-122.01},\"northeast\":{\"latitude\":37.4,\"longitude\":-123.98},\"dealType\":\"housing\",\"deals\":[{\"location\":{\"latitude\":37.37,\"longitude\":-122.03},\"company\":\"The Flats\",\"description\":\"300 W Washington Ave, Sunnyvale, CA 94086\\n 1 bedroom, $1900/month\",\"provider\":\"Padmapper\"}]}");
+            dealDatabase.add(record);
+
+            //restaurants
+            record = new JSONObject("{\"southwest\":{\"latitude\":37.37,\"longitude\":-122.01},\"northeast\":{\"latitude\":37.4,\"longitude\":-123.98},\"dealType\":\"restaurants\",\"deals\":[{\"location\":{\"latitude\":37.37,\"longitude\":-122.03},\"company\":\"Chacho's Taqueria\",\"description\":\"150 Lawrence Station Road, Sunnyvale, CA 94086\\n Free horchata with lunch! Valid today only\",\"provider\":\"Yelp\"}]}");
+            dealDatabase.add(record);
+            record = new JSONObject("{\"southwest\":{\"latitude\":37.37,\"longitude\":-122.01},\"northeast\":{\"latitude\":37.4,\"longitude\":-123.98},\"dealType\":\"housing\",\"deals\":[{\"location\":{\"latitude\":37.37,\"longitude\":-122.03},\"company\":\"Lucy's Bistro\",\"description\":\"1247 El Camino Real, Sunnyvale, CA 94086\\n Free appetizer with lunch!\",\"provider\":\"Yelp\"}]}");
+            dealDatabase.add(record);
+
+            //fashion
+//            record = new JSONObject();
+//            dealDatabase.add(record);
+//            record = new JSONObject();
+//            dealDatabase.add(record);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -58,5 +73,9 @@ public class DealFinder {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public Deal getTestDeal() {
+        return new Deal("Saks", "One day only surprising sales on women's shoes!");
     }
 }
