@@ -48,7 +48,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setupFeatureSwitch();
         setupCategorySpinner();
         setupDealListView();
-        //testDealFinder();
+//        testDealFinder();
     }
 
     private void setupStartEndInputs() {

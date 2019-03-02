@@ -45,10 +45,10 @@ public class DealFinder {
             dealDatabase.add(record);
 
             //restaurants
-//            record = new JSONObject();
-//            dealDatabase.add(record);
-//            record = new JSONObject();
-//            dealDatabase.add(record);
+            record = new JSONObject("{\"southwest\":{\"latitude\":37.37,\"longitude\":-122.01},\"northeast\":{\"latitude\":37.4,\"longitude\":-123.98},\"dealType\":\"restaurants\",\"deals\":[{\"location\":{\"latitude\":37.37,\"longitude\":-122.03},\"company\":\"Chacho's Taqueria\",\"description\":\"150 Lawrence Station Road, Sunnyvale, CA 94086\\n Free horchata with lunch! Valid today only\",\"provider\":\"Yelp\"}]}");
+            dealDatabase.add(record);
+            record = new JSONObject("{\"southwest\":{\"latitude\":37.37,\"longitude\":-122.01},\"northeast\":{\"latitude\":37.4,\"longitude\":-123.98},\"dealType\":\"housing\",\"deals\":[{\"location\":{\"latitude\":37.37,\"longitude\":-122.03},\"company\":\"Lucy's Bistro\",\"description\":\"1247 El Camino Real, Sunnyvale, CA 94086\\n Free appetizer with lunch!\",\"provider\":\"Yelp\"}]}");
+            dealDatabase.add(record);
 
             //fashion
 //            record = new JSONObject();
