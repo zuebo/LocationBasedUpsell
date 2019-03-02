@@ -81,7 +81,7 @@ public class Deal {
         return deals;
     }
 
-    private static Deal fromJson(JSONObject jsonObject) {
+    static Deal fromJson(JSONObject jsonObject) {
         Deal deal = new Deal();
         try {
             deal.company = jsonObject.getString("company");

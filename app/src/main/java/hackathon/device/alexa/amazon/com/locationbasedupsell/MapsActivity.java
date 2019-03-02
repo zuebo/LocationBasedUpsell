@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
@@ -47,6 +48,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setupFeatureSwitch();
         setupCategorySpinner();
         setupDealListView();
+        //testDealFinder();
     }
 
     private void setupStartEndInputs() {
@@ -154,4 +156,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+    private void testDealFinder() {
+        DealFinder dealFinder = new DealFinder();
+        List<Deal> deals = dealFinder.findDeals(new LatLng(37.38, -121.98), "Housing");
+        for (Deal deal: deals) {
+            System.out.println(deal);
+        }
+    }
+
+    private Deal getDealObject() {
+        DealFinder dealFinder = new DealFinder();
+        return dealFinder.getTestDeal();
+    }
+
 }
