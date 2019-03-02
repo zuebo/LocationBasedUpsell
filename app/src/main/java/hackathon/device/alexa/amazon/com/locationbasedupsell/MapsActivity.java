@@ -52,33 +52,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setupFeatureSwitch();
         setupCategorySpinner();
         setupDealListView();
+
         dealFinder = new DealFinder();
-    }
-
-    private void setupStartEndInputs() {
-        final EditText startText = (EditText) findViewById(R.id.startPoint);
-        final EditText endText = (EditText) findViewById(R.id.endPoint);
-        startText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mStartingPoint = startText.getText().toString();
-            }
-        });
-        endText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mEndPoint = endText.getText().toString();
-            }
-        });
-    }
-
-    private void setupDealListView() {
-        // initialize
-        mDealListAdapter = new DealItemArrayAdapter(this, mDealListItems);
-
-        mDealListView = findViewById(R.id.dealListView);
-        mDealListView.setAdapter(mDealListAdapter);
-
     }
 
 
@@ -106,6 +81,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onResume();
 
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapter, View view, int i, long l) {
+        // An item was selected. You can retrieve the selected item using
+        // parent.getItemAtPosition(pos)
+        mDealType = (String) adapter.getItemAtPosition(i);
+        Log.i(TAG, "onItemSelected: " + mDealType);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+    private void updateDealList() {
+        mDealListAdapter.clear();
+        mDealListAdapter.addAll(mDealListItems);
+
+    }
+
+    private void setupStartEndInputs() {
+        final EditText startText = (EditText) findViewById(R.id.startPoint);
+        final EditText endText = (EditText) findViewById(R.id.endPoint);
+        startText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mStartingPoint = startText.getText().toString();
+            }
+        });
+        endText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mEndPoint = endText.getText().toString();
+            }
+        });
+    }
+
+    private void setupDealListView() {
+        // initialize
+        mDealListItems.add(getDealObject());
+        mDealListItems.add(getDealObject());
+        mDealListAdapter = new DealItemArrayAdapter(this, mDealListItems);
+
+        mDealListView = findViewById(R.id.dealListView);
+        mDealListView.setAdapter(mDealListAdapter);
+
+    }
+
+
 
     private void setupMapView() {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -148,26 +172,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         spinner.setOnItemSelectedListener(this);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapter, View view, int i, long l) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
-        mDealType = (String) adapter.getItemAtPosition(i);
-        Log.i(TAG, "onItemSelected: " + mDealType);
-    }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
-    private void testDealFinder() {
-        DealFinder dealFinder = new DealFinder();
-        List<Deal> deals = dealFinder.findDeals(new LatLng(37.38, -121.98), "Housing");
-        for (Deal deal: deals) {
-            System.out.println(deal);
-        }
-    }
 
     private Deal getDealObject() {
         DealFinder dealFinder = new DealFinder();

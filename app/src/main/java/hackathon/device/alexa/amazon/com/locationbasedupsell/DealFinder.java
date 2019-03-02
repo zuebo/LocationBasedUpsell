@@ -76,7 +76,6 @@ public class DealFinder {
     }
 
     public Deal getTestDeal() {
-        JSONObject dealJson = dealDatabase.get(0);
-        return Deal.fromJson(dealJson);
+        return new Deal("Saks", "One day only surprising sales on women's shoes!");
     }
 }

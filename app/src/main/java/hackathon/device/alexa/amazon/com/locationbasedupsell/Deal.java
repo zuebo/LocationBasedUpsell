@@ -23,6 +23,11 @@ public class Deal {
 
     }
 
+    public Deal(String provider, String description) {
+        this.provider = provider;
+        this.description = description;
+    }
+
     public Deal(String company, LatLng location, String description, String provider) {
         this.company = company;
         this.location = location;

@@ -3,7 +3,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:weightSum="4"
-    android:layout_height="50dp">
+    android:layout_height="75dp">
     <LinearLayout
         android:layout_width="0dp"
         android:layout_weight="3"
@@ -12,15 +12,17 @@
         <TextView
             android:id="@+id/dealTitle"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="50dp"
             android:textSize="16dp"
+            android:lines="2"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
         <TextView
             android:id="@+id/dealSubTitle"
             android:layout_width="match_parent"
-            android:layout_height="15dp"
-            android:textSize="10dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+            android:layout_height="25dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="13dp" />
 
     </LinearLayout>
     <TextView
