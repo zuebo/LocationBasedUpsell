@@ -29,10 +29,14 @@ import static android.widget.Toast.LENGTH_SHORT;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, AdapterView.OnItemSelectedListener {
     private static final String TAG = "MapsActivity";
     private GoogleMap mMap;
+    private DealFinder dealFinder;
 
     // start and end destination
     private String mStartingPoint;
     private String mEndPoint;
+
+    // selected type.
+    private String mDealType;
 
     // this is the deal lists
     private ArrayList<Deal> mDealListItems = new ArrayList<>();
@@ -48,7 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setupFeatureSwitch();
         setupCategorySpinner();
         setupDealListView();
-//        testDealFinder();
+        dealFinder = new DealFinder();
     }
 
     private void setupStartEndInputs() {
@@ -148,8 +152,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onItemSelected(AdapterView<?> adapter, View view, int i, long l) {
         // An item was selected. You can retrieve the selected item using
         // parent.getItemAtPosition(pos)
-        String item = (String) adapter.getItemAtPosition(i);
-        Log.i(TAG, "onItemSelected: " + item);
+        mDealType = (String) adapter.getItemAtPosition(i);
+        Log.i(TAG, "onItemSelected: " + mDealType);
     }
 
     @Override
