@@ -11,5 +11,8 @@
     <string name="enabledToast">Your live deal is enabled!</string>
     <string name="disabledToast">Your live deal is disabled!</string>
     <string name="dealList">Live Deals</string>
+    <string name="startPoint">Starting Point...</string>
+    <string name="endPoint">End Point...</string>
+    <string name="shopDeal">shop</string>
 
 </resources>

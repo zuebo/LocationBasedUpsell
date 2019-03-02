@@ -10,25 +10,27 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class DealItemArrayAdapter extends ArrayAdapter<DealModel> {
+public class DealItemArrayAdapter extends ArrayAdapter<Deal> {
 
-    public DealItemArrayAdapter(@NonNull Context context, ArrayList<DealModel> deals) {
+    public DealItemArrayAdapter(@NonNull Context context, ArrayList<Deal> deals) {
         super(context, 0, deals);
     }
 
 
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        DealModel deal = getItem(position);
+        Deal deal = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.deals_listview, parent, false);
         }
         // Lookup view for data population
-        TextView dealText = (TextView) convertView.findViewById(R.id.dealText);
+        TextView dealTitle = (TextView) convertView.findViewById(R.id.dealTitle);
+        TextView dealSubTitle = (TextView) convertView.findViewById(R.id.dealSubTitle);
 
         // Populate the data into the template view using the data object
-        dealText.setText(deal.dealText);
+        dealTitle.setText(deal.getDescription());
+        dealSubTitle.setText(deal.getProvider());
 
         // Return the completed view to render on screen
         return convertView;

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -28,8 +29,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final String TAG = "MapsActivity";
     private GoogleMap mMap;
 
+    // start and end destination
+    private String mStartingPoint;
+    private String mEndPoint;
+
     // this is the deal lists
-    private ArrayList<DealModel> mDealListItems = new ArrayList<>();
+    private ArrayList<Deal> mDealListItems = new ArrayList<>();
     private DealItemArrayAdapter mDealListAdapter;
     private ListView mDealListView;
 
@@ -37,14 +42,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        setupStartEndInputs();
         setupMapView();
         setupFeatureSwitch();
         setupCategorySpinner();
         setupDealListView();
     }
 
+    private void setupStartEndInputs() {
+        final EditText startText = (EditText) findViewById(R.id.startPoint);
+        final EditText endText = (EditText) findViewById(R.id.endPoint);
+        startText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mStartingPoint = startText.getText().toString();
+            }
+        });
+        endText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mEndPoint = endText.getText().toString();
+            }
+        });
+    }
+
     private void setupDealListView() {
-        mDealListItems.add(new DealModel("Your deal is coming up!"));
+        // initialize
         mDealListAdapter = new DealItemArrayAdapter(this, mDealListItems);
 
         mDealListView = findViewById(R.id.dealListView);
