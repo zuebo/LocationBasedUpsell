@@ -296,7 +296,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mDealListView = findViewById(R.id.dealListView);
         mDealListView.setAdapter(mDealListAdapter);
-        ListViewUtil.setListViewHeightBasedOnChildren(mDealListView);
+//        ListViewUtil.setListViewHeightBasedOnChildren(mDealListView);
 
     }
 
