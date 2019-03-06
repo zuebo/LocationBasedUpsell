@@ -106,8 +106,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .apiKey("AIzaSyBM6pPBIAuZzzPVfGEn2ZFbKkH33301fsk")
                 .build();
         DirectionsApiRequest req = DirectionsApi.getDirections(context,
-                "37.407203,-122.038090",
-                "37.408884,-122.036987")
+                //"37.407203,-122.038090",
+                //"37.408884,-122.036987")
+        "sjc14",
+                "sjc10")
                 .mode(TravelMode.DRIVING);
         try {
             DirectionsResult res = req.await();
