@@ -38,23 +38,14 @@ public class DealFinder {
     private void populateDealDatabase() {
         JSONObject record = null;
         try {
-            //housing
-            record = new JSONObject("{\"southwest\":{\"latitude\":37.37,\"longitude\":-122.01},\"northeast\":{\"latitude\":37.4,\"longitude\":-121.98},\"dealType\":\"housing\",\"deals\":[{\"location\":{\"latitude\":37.38,\"longitude\":-121.98},\"company\":\"The Arches\",\"description\":\"1235 Wildwood Ave, Sunnyvale, CA 94089\\n 2 bedroom, $2600/month\",\"provider\":\"Zillow\"}]}");
-            dealDatabase.add(record);
-            record = new JSONObject("{\"southwest\":{\"latitude\":37.37,\"longitude\":-122.01},\"northeast\":{\"latitude\":37.4,\"longitude\":-123.98},\"dealType\":\"housing\",\"deals\":[{\"location\":{\"latitude\":37.37,\"longitude\":-122.03},\"company\":\"The Flats\",\"description\":\"300 W Washington Ave, Sunnyvale, CA 94086\\n 1 bedroom, $1900/month\",\"provider\":\"Padmapper\"}]}");
-            dealDatabase.add(record);
 
             //restaurants
-            record = new JSONObject("{\"southwest\":{\"latitude\":37.37,\"longitude\":-122.01},\"northeast\":{\"latitude\":37.4,\"longitude\":-123.98},\"dealType\":\"restaurants\",\"deals\":[{\"location\":{\"latitude\":37.37,\"longitude\":-122.03},\"company\":\"Chacho's Taqueria\",\"description\":\"150 Lawrence Station Road, Sunnyvale, CA 94086\\n Free horchata with lunch! Valid today only\",\"provider\":\"Yelp\"}]}");
+            record = new JSONObject("{\"southwest\":{\"latitude\":37.394321,\"longitude\":-122.0310037},\"northeast\":{\"latitude\":37.3956763,\"longitude\":-122.0300917},\"dealType\":\"restaurants\",\"deals\":[{\"location\":{\"latitude\":37.394321,\"longitude\":-122.0310037},\"company\":\"Dish n' Dash\",\"description\":\"736 N Mathilda Ave, Sunnyvale, CA 94085\\n Free salad/fries with lunch!\",\"provider\":\"Yelp\"},{\"location\":{\"latitude\":37.394321,\"longitude\":-122.0310037},\"company\":\"Hobee's\",\"description\":\"800 W Ahwanee Ave, Sunnyvale, CA 94085\\n Free drink with lunch/dinner!\",\"provider\":\"Yelp\"}]}");
             dealDatabase.add(record);
-            record = new JSONObject("{\"southwest\":{\"latitude\":37.37,\"longitude\":-122.01},\"northeast\":{\"latitude\":37.4,\"longitude\":-123.98},\"dealType\":\"housing\",\"deals\":[{\"location\":{\"latitude\":37.37,\"longitude\":-122.03},\"company\":\"Lucy's Bistro\",\"description\":\"1247 El Camino Real, Sunnyvale, CA 94086\\n Free appetizer with lunch!\",\"provider\":\"Yelp\"}]}");
+            record = new JSONObject("{\"southwest\":{\"latitude\":37.3880074,\"longitude\":-122.028055},\"northeast\":{\"latitude\":37.3900599,\"longitude\":-122.0231831},\"dealType\":\"restaurants\",\"deals\":[{\"location\":{\"latitude\":37.3879137,\"longitude\":-122.0261667},\"company\":\"Pho Lovers\",\"description\":\"253 E Maude Ave, Sunnyvale, CA 94085\\n 15% off any pho dish! Valid today only.\",\"provider\":\"Yelp\"},{\"location\":{\"latitude\":37.3879137,\"longitude\":-122.0261667},\"company\":\"Gombei Bento\",\"description\":\"155 E Maude Ave, Sunnyvale, CA 94085\\n Free drink with lunch!\",\"provider\":\"Yelp\"}]}");
             dealDatabase.add(record);
-
-            //fashion
-//            record = new JSONObject();
-//            dealDatabase.add(record);
-//            record = new JSONObject();
-//            dealDatabase.add(record);
+            record = new JSONObject("{\"southwest\":{\"latitude\":37.3762487,\"longitude\":-122.0332551},\"northeast\":{\"latitude\":37.3774849,\"longitude\":-122.0319676},\"dealType\":\"restaurants\",\"deals\":[{\"location\":{\"latitude\":37.37,\"longitude\":-122.03},\"company\":\"Inchin's Bamboo Garden\",\"description\":\"151 W Washington Ave, Sunnyvale, CA 94087\\n Free drink with dinner!\",\"provider\":\"Yelp\"},{\"location\":{\"latitude\":37.3762487,\"longitude\":-122.0332551},\"company\":\"Thai Basil\",\"description\":\"101 S Murphy Ave, Sunnyvale, CA 94086\\n Free Thai iced tea with lunch!\",\"provider\":\"Yelp\"}]}");
+            dealDatabase.add(record);
 
         } catch (JSONException e) {
             e.printStackTrace();
