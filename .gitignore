@@ -2,6 +2,7 @@
 .idea/*
 .gradle
 .gradle/
+app/app.iml
 /local.properties
 /.idea/libraries
 /.idea/modules.xml

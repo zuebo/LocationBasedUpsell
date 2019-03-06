@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,10 +56,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private DealFinder dealFinder;
     private int mElapsedTime = 0;
     private List<LatLng> mWayPoints;
-
+    private Timer mTimer;
+    private boolean mIsFeatureOn = false;
+    private boolean mIsTimerRunning = false;
     // start and end destination
-    private String mStartingPoint;
-    private String mEndPoint;
+    private String mStartingPoint = null;
+    private String mEndPoint = null;
 
     // selected type.
     private String mDealType = "restaurants";
@@ -85,9 +88,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         //Define list to get all latlng for the route
-        mWayPoints = getRoute("SJC10", "Sunnyvale Downtown");
+        calculateWayPoints();
         LatLng src = mWayPoints.get(0);
-        mMap.addMarker(new MarkerOptions().position(src).title("Marker in src"));
+        drawNedim(src);
         //mMap.addMarker(new MarkerOptions().position(dst).title("Marker in dst"));
 
         //Draw the polyline
@@ -98,33 +101,60 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(src, 12));
-        startSimulation();
-    }
 
+    }
+    private void calculateWayPoints() {
+        if (mStartingPoint == null && mEndPoint == null) {
+            mWayPoints = getRoute("SJC10", "Sunnyvale Downtown");
+        } else {
+            mWayPoints = getRoute(mStartingPoint, mEndPoint);
+        }
+    }
+    private void drawNedim(LatLng latLng) {
+        mMap.addMarker(new MarkerOptions().position(latLng).icon(getIcon()));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+    }
     private void startSimulation() {
         // draw marker in interval
+        // update deals based the waypoints
         startTimer();
-        // updeals based the waypoints
-    }
 
+    }
+    private void stopSimulation() {
+        // stop timer. reset mElapsedTime.
+        stopTimer();
+        mElapsedTime = 0;
+
+    }
     private void startTimer() {
+        if (!mIsTimerRunning) {
+            mTimer = new Timer();
+            mTimer.scheduleAtFixedRate(new TimerTask() {
+                public void run() {
+                    mElapsedTime += 1; //increase every sec
+                    mHandler.obtainMessage(1).sendToTarget();
+                    Log.i(TAG, "run: scheduleAtFixedRate");
+                }
+            }, 0, 200);
+            mIsTimerRunning = true;
+        }
 
-        boolean isTimerRunning = true;
-        final Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                mElapsedTime += 1; //increase every sec
-                mHandler.obtainMessage(1).sendToTarget();
-            }
-        }, 0, 100);
     }
+    private void stopTimer() {
+        if (mIsTimerRunning) {
+            mTimer.cancel();
+            mTimer.purge();
+            mIsTimerRunning = false;
+        }
+    }
+
     public Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
-            if (mWayPoints != null) {
-                LatLng dst = mWayPoints.get(mElapsedTime < mWayPoints.size() ? mElapsedTime : mWayPoints.size() - 1);
+            if (mWayPoints != null && mWayPoints.size() != 0) {
+                LatLng dst = mWayPoints.get(mElapsedTime % mWayPoints.size());
                 mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(dst).title("Marker in dst").icon(getIcon()));
+                drawNedim(dst);
+                Log.i(TAG, "handling message");
 
                 // find deals
                 mDealListItems = dealFinder.findDeals(dst, mDealType);
@@ -238,6 +268,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mEndPoint = endText.getText().toString();
             }
         });
+        endText.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    mStartingPoint = startText.getText().toString();
+                    mEndPoint = endText.getText().toString();
+                    calculateWayPoints();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void setupDealListView() {
@@ -271,10 +315,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (b) {
                     // switch to true
                     Toast.makeText(getApplicationContext(), R.string.enabledToast, LENGTH_SHORT).show();
+                    mIsFeatureOn = true;
+                    startSimulation();
 
                 } else {
                     //switch to false
                     Toast.makeText(getApplicationContext(), R.string.disabledToast, LENGTH_SHORT).show();
+                    mIsFeatureOn = false;
+                    stopSimulation();
 
                 }
             }
@@ -292,6 +340,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+        spinner.setSelection(2); // restaurants
     }
 
 

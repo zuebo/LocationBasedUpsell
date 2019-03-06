@@ -16,5 +16,7 @@
     <string name="shopDeal">shop</string>
     <string name="SJC10">SJC10</string>
     <string name="SunnyvaleDowntown">Sunnyvale Downtown</string>
+    <string name="from">From:</string>
+    <string name="to">To:</string>
 
 </resources>
