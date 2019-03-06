@@ -1,8 +1,14 @@
 package hackathon.device.alexa.amazon.com.locationbasedupsell;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +27,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -36,6 +44,8 @@ import com.google.maps.model.TravelMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
@@ -43,13 +53,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final String TAG = "MapsActivity";
     private GoogleMap mMap;
     private DealFinder dealFinder;
+    private int mElapsedTime = 0;
+    private List<LatLng> mWayPoints;
 
     // start and end destination
     private String mStartingPoint;
     private String mEndPoint;
 
     // selected type.
-    private String mDealType;
+    private String mDealType = "restaurants";
 
     // this is the deal lists
     private ArrayList<Deal> mDealListItems = new ArrayList<>();
@@ -72,31 +84,63 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        LatLng src = new LatLng(37.408884,-122.036987);
-        mMap.addMarker(new MarkerOptions().position(src).title("Marker in src"));
-
-        LatLng dst = new LatLng(37.407203,-122.038090);
-        mMap.addMarker(new MarkerOptions().position(src).title("Marker in dst"));
-
-        LatLng zaragoza = new LatLng(37.408884,-122.036987);
-
         //Define list to get all latlng for the route
-        List<LatLng> path = getRoute(src, dst);
-
+        mWayPoints = getRoute("SJC10", "Sunnyvale Downtown");
+        LatLng src = mWayPoints.get(0);
+        mMap.addMarker(new MarkerOptions().position(src).title("Marker in src"));
+        //mMap.addMarker(new MarkerOptions().position(dst).title("Marker in dst"));
 
         //Draw the polyline
-        if (path.size() > 0) {
-            PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLUE).width(5);
-            mMap.addPolyline(opts);
-        }
+//        if (path.size() > 0) {
+//            PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLUE).width(5);
+//            mMap.addPolyline(opts);
+//        }
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zaragoza, 12));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(src, 12));
+        startSimulation();
     }
 
-    List<LatLng> getRoute(LatLng src, LatLng dst) {
+    private void startSimulation() {
+        // draw marker in interval
+        startTimer();
+        // updeals based the waypoints
+    }
+
+    private void startTimer() {
+
+        boolean isTimerRunning = true;
+        final Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                mElapsedTime += 1; //increase every sec
+                mHandler.obtainMessage(1).sendToTarget();
+            }
+        }, 0, 100);
+    }
+    public Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            if (mWayPoints != null) {
+                LatLng dst = mWayPoints.get(mElapsedTime < mWayPoints.size() ? mElapsedTime : mWayPoints.size() - 1);
+                mMap.clear();
+                mMap.addMarker(new MarkerOptions().position(dst).title("Marker in dst").icon(getIcon()));
+
+                // find deals
+                mDealListItems = dealFinder.findDeals(dst, mDealType);
+                updateDealList();
+            }
+        }
+    };
+
+    private BitmapDescriptor getIcon() {
+        Drawable dr = getResources().getDrawable(R.drawable.nedim);
+        Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 80, 100, true);
+        return BitmapDescriptorFactory.fromBitmap(scaledBitmap);
+
+    }
+    List<LatLng> getRoute(String src, String dst) {
         //Define list to get all latlng for the route
         List<LatLng> path = new ArrayList();
 
@@ -105,11 +149,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey("AIzaSyBM6pPBIAuZzzPVfGEn2ZFbKkH33301fsk")
                 .build();
-        DirectionsApiRequest req = DirectionsApi.getDirections(context,
-                //"37.407203,-122.038090",
-                //"37.408884,-122.036987")
-        "sjc14",
-                "sjc10")
+        DirectionsApiRequest req = DirectionsApi.getDirections(context, src, dst)
                 .mode(TravelMode.DRIVING);
         try {
             DirectionsResult res = req.await();

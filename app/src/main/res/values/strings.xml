@@ -14,5 +14,7 @@
     <string name="startPoint">Starting Point...</string>
     <string name="endPoint">End Point...</string>
     <string name="shopDeal">shop</string>
+    <string name="SJC10">SJC10</string>
+    <string name="SunnyvaleDowntown">Sunnyvale Downtown</string>
 
 </resources>

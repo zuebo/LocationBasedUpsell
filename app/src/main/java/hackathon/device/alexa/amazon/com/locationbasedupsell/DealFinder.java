@@ -20,8 +20,8 @@ public class DealFinder {
     }
 
 
-    List<Deal> findDeals(LatLng latLng, String dealType) {
-        List<Deal> deals = new ArrayList<>();
+    ArrayList<Deal> findDeals(LatLng latLng, String dealType) {
+        ArrayList<Deal> deals = new ArrayList<>();
         try {
             for (JSONObject record : dealDatabase) {
                 if (dealType.toLowerCase().equals(record.getString("dealType")) && inGeofence(latLng, record)) {
