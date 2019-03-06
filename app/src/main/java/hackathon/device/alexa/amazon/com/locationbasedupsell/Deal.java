@@ -103,4 +103,10 @@ public class Deal {
         return deal;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        Deal objDeal = (Deal) obj;
+        return this.description.equals(objDeal.description) &&
+                this.company.equals(objDeal.company);
+    }
 }

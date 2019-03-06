@@ -13,7 +13,8 @@
             android:id="@+id/dealTitle"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textSize="16dp"
+            android:gravity="center|left"
+            android:textSize="20dp"
             android:lines="2"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
@@ -21,8 +22,9 @@
             android:id="@+id/dealSubTitle"
             android:layout_width="match_parent"
             android:layout_height="25dp"
+            android:gravity="center|left"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textSize="13dp" />
+            android:textSize="16dp" />
 
     </LinearLayout>
     <TextView

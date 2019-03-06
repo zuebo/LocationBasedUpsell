@@ -30,7 +30,7 @@ public class DealItemArrayAdapter extends ArrayAdapter<Deal> {
 
         // Populate the data into the template view using the data object
         dealTitle.setText(deal.getDescription());
-        dealSubTitle.setText("From " + deal.getProvider());
+        dealSubTitle.setText(deal.getProvider().toUpperCase() + " deal for " + deal.getCompany());
 
         // Return the completed view to render on screen
         return convertView;

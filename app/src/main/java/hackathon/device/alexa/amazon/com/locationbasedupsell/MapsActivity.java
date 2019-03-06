@@ -44,7 +44,9 @@ import com.google.maps.model.EncodedPolyline;
 import com.google.maps.model.TravelMode;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -248,8 +250,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void updateDealList() {
-        mDealListAdapter.clear();
-        mDealListAdapter.addAll(mDealListItems);
+         mDealListAdapter.clear();
+         mDealListAdapter.addAll(mDealListItems);
+//        Set<Deal> set = new HashSet<>();
+//        set.addAll(mDealListItems);
+//        ArrayList<Deal> list = new ArrayList<>(set);
+//        mDealListAdapter.addAll(list);
 
     }
 
@@ -286,8 +292,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void setupDealListView() {
         // initialize
-        mDealListItems.add(getDealObject());
-        mDealListItems.add(getDealObject());
         mDealListAdapter = new DealItemArrayAdapter(this, mDealListItems);
 
         mDealListView = findViewById(R.id.dealListView);
